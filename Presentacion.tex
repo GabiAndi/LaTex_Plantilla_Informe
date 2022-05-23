@@ -1,14 +1,16 @@
 %%%%%%%%%%%%%%%%%%%%%% Tipo de documento %%%%%%%%%%%%%%%%%%%%%%
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%% Configuracion de paquetes %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Configuración de paquetes %%%%%%%%%%%%%%%%%%
 \usepackage[T1]{fontenc}
-\usepackage[a4paper, width=150mm, top=25mm, bottom=25mm, bindingoffset=6mm]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish, es-tabla]{babel}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage[spanish,es-tabla]{babel}
 \usepackage{amsmath}
-\usepackage{amssymb, amsfonts, latexsym, cancel}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{cancel}
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{float}
@@ -23,37 +25,92 @@
 \usepackage{hyperref}
 \usepackage{titlesec}
 \usepackage{etoc}
+\usepackage[type={CC},modifier={by-nc},version={4.0}]{doclicense}
 \usepackage{pdfpages}
 \usepackage{outlines}
 \usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{xcolor-material}
 \usepackage{tcolorbox}
+\usepackage{appendix}
+\usepackage{xargs}
+\usepackage{parskip}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage[hypcap=true]{caption}
+\usepackage{charter}
+\usepackage{svg}
+\usepackage{afterpage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%% Selección de fuente %%%%%%%%%%%%%%%%%%%%
+\renewcommand*\familydefault{bch}
+\fontfamily{\familydefault}\selectfont
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% Variables del documento %%%%%%%%%%%%%%%%%%
-\newcommand{\titulodocumento}{Título del documento}
-\newcommand{\subtitulodocumento}{Subtítulo del documento}
-\newcommand{\logodocumento}{src/imagenes/doc/logo.png}
-\newcommand{\autordocumento}{Nombre y apellido}
+\newcommand{\titulodocumento}{Proyecto final de Ingeniería Mecatrónica}
+\newcommand{\subtitulodocumento}{Sistema de control para planta de tratamiento de efluentes}
+\newcommand{\logodocumento}{\includesvg[inkscapelatex=false,scale=0.3]{src/imagenes/doc/logo}}
+\newcommand{\autordocumento}{Gianluca Lovatto y Gabriel Aguirre}
 \newcommand{\fechadocumento}{\today}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%% Configuracion de links %%%%%%%%%%%%%%%%%%%
-\hypersetup
+%%%%%%%%%%%%%%%%%%%%%%%% Pagina en blanco %%%%%%%%%%%%%%%%%%%%%
+\def\blankpage
 {
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=blue,      
-    urlcolor=blue,
-    citecolor=blue,
-    pdftitle={\titulodocumento}
+    \clearpage
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \null
+    \clearpage
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%% Configuracion de cajas %%%%%%%%%%%%%%%%%%%
-\tcbuselibrary{listings,theorems,most}
+%%%%%%%%%%%%%%%%%%%% Configuración de links %%%%%%%%%%%%%%%%%%%
+\hypersetup
+{
+    colorlinks=true,
+    linkcolor=MaterialIndigo700,
+    filecolor=MaterialIndigo700,      
+    urlcolor=MaterialIndigo700,
+    citecolor=MaterialIndigo700
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%% Configuracion de paginas %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% Configuración de cajas %%%%%%%%%%%%%%%%%%%
+\tcbuselibrary{listings,theorems,most}
+
+% Caja simple con título
+\newtcolorbox{info}[1]
+{
+    colback=MaterialIndigo50,colframe=MaterialIndigo700,title=#1
+}
+
+% Caja agrupada para englobar tomas concretos
+\newtcbtheorem[auto counter,number within=section]{theo}{Teorema}
+{
+    fonttitle=\upshape,
+    fontupper=\slshape,
+    arc=0mm,
+    colback=MaterialIndigo50,
+    colframe=MaterialIndigo700
+}{teorema}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tareas %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\edit}{\ding{46}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%% Configuración de paginas %%%%%%%%%%%%%%%%%%%
 \etocsettocstyle{}{}
 
 \pagestyle{empty}
@@ -61,6 +118,8 @@
 \patchcmd{\chapter}{plain}{empty}{}{}
 
 \setlength{\headheight}{15pt}
+
+\setlength{\parindent}{1cm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%% Cabecera y pie de pagina %%%%%%%%%%%%%%%%%%
@@ -90,7 +149,7 @@
         \vspace{0.25cm}
         {\large{\subtitulodocumento \\}}
         \vspace{2cm}
-        {\includegraphics[scale=0.35]{\logodocumento} \\}
+        {\logodocumento \\}
         \vspace{2cm}
         {\large{Autores: \autordocumento \\}}
         {\large{Última modificación: \fechadocumento}}
@@ -101,24 +160,26 @@
 
 % Indice
 \newpage
-\section*{Contenido global}
+\section*{Contenido}
 \tableofcontents
 \newpage
 
-% Desarrollo del trabajo
+% Numero de pagina para posteriores capítulos
+\pagenumbering{arabic}
 \setcounter{page}{1}
 
-% Estilo
+% Formato de hojas
 \pagestyle{fancy}
 
-% Capitulos
+% Contenido
 \input{src/latex/contenido.tex}
-
-% Referencias
 \newpage
 
+% Referencias
 \pagestyle{empty}
-	
-\input{src/latex/referencias.tex}
+
+\bibliography{src/referencias/bibliography}
+\bibliographystyle{unsrt}
+\nocite{*}
 
 \end{document}
